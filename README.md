@@ -5,4 +5,4 @@ Platform to manage events and participants. The project is divided into two part
 
 ## How to run the project
 - Navigate to `frontend` and run `ng serve` for the frontend.
-- Navigate to `backend` and run `npm run start` (or `mvn spring-boot:run`).
+- Navigate to `backend` and run `npm run start`.
