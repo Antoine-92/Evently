@@ -1,0 +1,112 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="mb-4">Create a New Event</h2>
+      <form #eventForm="ngForm" (ngSubmit)="onSubmit()">
+        <!-- Event Name Field -->
+        <div class="mb-3">
+          <label for="name" class="form-label">Event Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="form-control"
+            [(ngModel)]="event.name"
+            required
+          />
+        </div>
+
+        <!-- Date Field -->
+        <div class="mb-3">
+          <label for="date" class="form-label">Date</label>
+          <input
+            type="date"
+            id="date"
+            name="date"
+            class="form-control"
+            [(ngModel)]="event.date"
+            required
+          />
+        </div>
+
+        <!-- Location Field -->
+        <div class="mb-3">
+          <label for="location" class="form-label">Location</label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            class="form-control"
+            [(ngModel)]="event.location"
+            required
+          />
+        </div>
+
+        <!-- Description Field -->
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            rows="4"
+            class="form-control"
+            [(ngModel)]="event.description"
+            required
+          ></textarea>
+        </div>
+
+        <!-- Event Type Dropdown -->
+        <div class="mb-3">
+          <label for="type" class="form-label">Event Type</label>
+          <select
+            id="type"
+            name="type"
+            class="form-select"
+            [(ngModel)]="event.type"
+            required
+          >
+            <option *ngFor="let type of eventTypes" [value]="type">
+              {{ type }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Participants Selection -->
+        <div class="mb-3">
+          <label for="participants" class="form-label">Participants</label>
+          <div class="form-check" *ngFor="let participant of participantList">
+            <input
+              type="checkbox"
+              [value]="participant.id"
+              id="participant-{{ participant.id }}"
+              (change)="onParticipantChange(participant.id, $event)"
+              [checked]="event.participants.includes(participant.id)"
+              class="form-check-input"
+            />
+            <label
+              class="form-check-label"
+              for="participant-{{ participant.id }}"
+            >
+              {{ participant.name }}
+            </label>
+          </div>
+        </div>
+
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="btn btn-primary w-100"
+          [disabled]="!eventForm.valid"
+        >
+          Create Event
+        </button>
+      </form>
+
+      <!-- Success Message -->
+      <div *ngIf="showSuccessMessage" class="alert alert-success mt-3" role="alert">
+        Event "{{ lastEventName }}" created successfully!
+      </div>
+    </div>
+  </div>
+</div>

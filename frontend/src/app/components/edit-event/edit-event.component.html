@@ -1,0 +1,103 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Edit Event</h2>
+
+  <!-- Event Name Field -->
+  <div class="mb-3">
+    <label for="name" class="form-label">Event Name</label>
+    <input 
+      type="text" 
+      id="name" 
+      name="name" 
+      class="form-control" 
+      [(ngModel)]="event.name" 
+      required
+    />
+  </div>
+
+  <!-- Date Field -->
+  <div class="mb-3">
+    <label for="date" class="form-label">Date</label>
+    <input 
+      type="date" 
+      id="date" 
+      name="date" 
+      class="form-control" 
+      [(ngModel)]="event.date" 
+      required
+    />
+  </div>
+
+  <!-- Location Field -->
+  <div class="mb-3">
+    <label for="location" class="form-label">Location</label>
+    <input 
+      type="text" 
+      id="location" 
+      name="location" 
+      class="form-control" 
+      [(ngModel)]="event.location" 
+      required
+    />
+  </div>
+
+  <!-- Description Field -->
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <textarea 
+      id="description" 
+      name="description" 
+      rows="4" 
+      class="form-control" 
+      [(ngModel)]="event.description"
+      required
+    ></textarea>
+  </div>
+
+  <!-- Event Type Dropdown -->
+  <div class="mb-3">
+    <label for="type" class="form-label">Event Type</label>
+    <select 
+      id="type" 
+      name="type" 
+      class="form-select" 
+      [(ngModel)]="event.type" 
+      required
+    >
+      <option *ngFor="let type of eventTypes" [value]="type">
+        {{ type }}
+      </option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <div class="d-flex justify-content-between align-items-center pb-2">
+      <label class="form-label">Participants</label>
+      <button 
+        class="btn btn-success btn-sm" 
+        (click)="openAddParticipantModal()">
+        Add Participant
+      </button>
+    </div>
+    <div style="width: 100%; height: 300px;" class="ag-theme-alpine">
+      <ag-grid-angular
+        [rowData]="event.participants"
+        [columnDefs]="colDefs"
+        class="ag-theme-alpine"
+        style="width: 100%; height: 100%;">
+      </ag-grid-angular>
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <button 
+    class="btn btn-primary w-100" 
+    (click)="onSubmit()" 
+    [disabled]="!event.name || !event.date || !event.location || !event.description || !event.type">
+    Save Changes
+  </button>
+
+  <!-- Success Message -->
+  <div *ngIf="showSuccessMessage" class="alert alert-success mt-3" role="alert">
+    Event updated successfully!
+  </div>
+</div>
