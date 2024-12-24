@@ -4,20 +4,12 @@ import dotenv from 'dotenv';
 import { setupRoutes } from './routes';
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import { Pool } from 'pg';
+import { pool } from './config';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-const pool = new Pool({
-    user: process.env.DB_USER || 'postgres',
-    host: process.env.DB_HOST || 'localhost',
-    database: process.env.DB_NAME || 'event_management',
-    password: process.env.DB_PASSWORD || 'Antoine92',
-    port: parseInt(process.env.DB_PORT || '5432'),
-});
 
 pool.connect()
     .then(() => console.log('Connected to PostgreSQL database'))

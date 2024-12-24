@@ -1,10 +1,12 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
-
 # Compiled output
 /dist
 /tmp
 /out-tsc
 /bazel-out
+
+# Angular cache
+/.angular/cache
+.angular-errors.log
 
 # Node
 /node_modules
@@ -19,6 +21,7 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
+*.code-workspace
 
 # Visual Studio Code
 .vscode/*
@@ -28,15 +31,41 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
+# Environment files
+.env
+.env.*.local
+
+# Test coverage
 /coverage
+
+# Logs and debugging
+*.log
 /libpeerconnection.log
 testem.log
+
+# Temporary or lock files
+/connect.lock
+/.lock-wscript
+/.yarn-integrity
+
+# Miscellaneous
+.sass-cache/
 /typings
+node-repl-history
+*.pid
+*.seed
+*.pid.lock
+/coverage
+/libpeerconnection.log
 
 # System files
 .DS_Store
 Thumbs.db
+Desktop.ini
+
+# Generated files from Angular Universal (SSR)
+server/main.js
+server/main.js.map
+
+# Build artifacts for Angular Universal (SSR)
+/dist-server

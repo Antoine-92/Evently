@@ -1,11 +1,11 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ColDef, AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { ColDef, AllCommunityModule, ModuleRegistry, PaginationModule, PaginationNumberFormatterParams, } from 'ag-grid-community';
 import { AgGridModule } from 'ag-grid-angular';
 import { Router } from '@angular/router';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+ModuleRegistry.registerModules([AllCommunityModule, PaginationModule]);
 
 @Component({
   selector: 'app-participant-list',
@@ -23,6 +23,16 @@ export class ParticipantListComponent implements OnInit {
   error: string | null = null;
   errorMessage = '';
   successMessage = '';
+  pagination = true;
+
+  public paginationPageSize = 12;
+  public paginationPageSizeSelector: number[] | boolean = [12, 24, 36];
+  public paginationNumberFormatter: (
+    params: PaginationNumberFormatterParams,
+  ) => string = (params: PaginationNumberFormatterParams) => {
+    return "[" + params.value.toLocaleString() + "]";
+  };
+  
 
   constructor(
     private http: HttpClient,

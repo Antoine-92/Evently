@@ -13,8 +13,11 @@
     <!-- Participant List with AR-GRID library -->
     <div *ngIf="rowData && colDefs" style="width: 100%; height: 100%;">
         <ag-grid-angular
+        [pagination]="pagination"
+        [paginationPageSize]="paginationPageSize"
+        [paginationPageSizeSelector]="paginationPageSizeSelector"
         class="ag-theme-alpine"
-        style="width: 100%; height: 500px;"
+        style="width: 100%; height: 600px;"
         [rowData]="rowData"
         [columnDefs]="colDefs">
         </ag-grid-angular>

@@ -1,14 +1,5 @@
 import { Request, Response } from 'express';
-import { Pool } from 'pg';
-
-// Configuration of PostgreSQL database
-const pool = new Pool({
-    user: process.env.DB_USER || 'postgres',
-    host: process.env.DB_HOST || 'localhost',
-    database: process.env.DB_NAME || 'event_management',
-    password: process.env.DB_PASSWORD || 'Antoine92',
-    port: parseInt(process.env.DB_PORT || '5432'),
-});
+import { pool } from './config';
 
 /**
  * @swagger
@@ -96,7 +87,6 @@ export const getAllEvents = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Failed to retrieve events with participants' });
     }
 };
-
 
 /**
  * @swagger
@@ -649,7 +639,6 @@ export const getAllRelations = async (req: Request, res: Response) => {
  */
 export const getAllEventsByParticipant = async (req: Request, res: Response) => {
     const { participantId } = req.params;
-
     try {
         const result = await pool.query(
             `
