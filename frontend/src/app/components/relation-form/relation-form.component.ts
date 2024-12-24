@@ -13,6 +13,7 @@ import { ChangeDetectorRef } from '@angular/core';
   templateUrl: './relation-form.component.html',
   styleUrls: ['./relation-form.component.css'],
 })
+
 export class RelationFormComponent implements OnInit {
   participants: any[] = [];
   events: any[] = [];
@@ -28,26 +29,21 @@ export class RelationFormComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
   
-
   ngOnInit() {
     this.fetchParticipants();
     this.fetchEvents();
     this.fetchRelations();
-  
     this.route.params.subscribe((params) => {
       const eventId = params['eventId'];
       const participantId = params['participantId'];
-  
       if (eventId) {
         this.selectedEventId = Number(eventId);
       }
-  
       if (participantId) {
         this.selectedParticipantId = Number(participantId);
       }
     });
   }
-  
 
   fetchParticipants() {
     const apiUrlParticipants = 'http://localhost:3000/api/participants';
@@ -79,7 +75,6 @@ export class RelationFormComponent implements OnInit {
     );
   }
   
-
   isParticipantInEvent(): boolean {
     const isInEvent = this.relations.some(
       (relation) =>
@@ -95,13 +90,11 @@ export class RelationFormComponent implements OnInit {
       setTimeout(() => (this.errorMessage = ''), 3000);
       return;
     }
-  
     if (this.isParticipantInEvent()) {
       this.errorMessage = 'Participant is already in the event.';
       setTimeout(() => (this.errorMessage = ''), 3000);
       return;
     }
-  
     const apiUrlPost = `http://localhost:3000/api/events/${this.selectedEventId}/participants/${this.selectedParticipantId}`;
     this.http.post(apiUrlPost, {}).subscribe(
       () => {
@@ -123,4 +116,5 @@ export class RelationFormComponent implements OnInit {
       }
     );
   }
+  
 }

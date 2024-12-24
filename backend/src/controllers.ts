@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Pool } from 'pg';
 
-// Configuration PostgreSQL
+// Configuration of PostgreSQL database
 const pool = new Pool({
     user: process.env.DB_USER || 'postgres',
     host: process.env.DB_HOST || 'localhost',
@@ -73,7 +73,6 @@ const pool = new Pool({
  *                           type: string
  *                           example: "john.doe@example.com"
  */
-// Récupérer tous les événements
 export const getAllEvents = async (req: Request, res: Response) => {
     try {
         const result = await pool.query(`
@@ -139,18 +138,13 @@ export const getAllEvents = async (req: Request, res: Response) => {
  *         description: Event not found.
  */
 export const getEventById = async (req: Request, res: Response) => {
-    const { id } = req.params; // Récupérer l'ID à partir des paramètres de la route
+    const { id } = req.params; 
 
     try {
-        // Effectuer la requête SQL pour obtenir un événement par son ID
         const result = await pool.query('SELECT * FROM events WHERE id = $1', [id]);
-
-        // Vérifier si l'événement existe
         if (result.rowCount === 0) {
             return res.status(404).json({ error: 'Event not found' });
         }
-
-        // Retourner l'événement trouvé
         res.status(200).json(result.rows[0]);
     } catch (error) {
         res.status(500).json({ error: 'Failed to retrieve event' });
@@ -304,7 +298,7 @@ export const deleteEvent = async (req: Request, res: Response) => {
     }
 };
 
-//--------------------------------------------- Participants ------------------------------------------------------//
+//------------------------------------------------------- Participants --------------------------------------------------------------//
 
 /**
  * @swagger
@@ -567,7 +561,7 @@ export const deleteParticipant = async (req: Request, res: Response) => {
     }
 };
 
-//--------------------------------------------- Relations ------------------------------------------------------//
+//------------------------------------------------------- Relations --------------------------------------------------------------//
 
 /**
  * @swagger
@@ -714,7 +708,6 @@ export const getParticipantsByEvent = async (req: Request, res: Response) => {
     const { eventId } = req.params;
 
     try {
-        // Query to get participants associated with the given event
         const result = await pool.query(`
             SELECT 
                 p.id AS participant_id,
@@ -762,16 +755,13 @@ export const getParticipantsByEvent = async (req: Request, res: Response) => {
  *         description: Failed to add participant to event.
  */
 export const addParticipantToEvent = async (req: Request, res: Response) => {
-    const { eventId, participantId } = req.params; // Extract eventId and participantId from params
+    const { eventId, participantId } = req.params;
 
     try {
-        // Insert the association into the event_participants table
         const result = await pool.query(
             'INSERT INTO event_participants (event_id, participant_id) VALUES ($1, $2) RETURNING *',
             [eventId, participantId]
         );
-
-        // Return a success message
         res.status(201).json({ message: 'Participant added to event successfully', association: result.rows[0] });
     } catch (error) {
         console.error('Failed to add participant to event:', error);
@@ -810,21 +800,16 @@ export const addParticipantToEvent = async (req: Request, res: Response) => {
  *         description: Failed to remove participant from event.
  */
 export const removeParticipantFromEvent = async (req: Request, res: Response) => {
-    const { eventId, participantId } = req.params; // Extract eventId and participantId from params
+    const { eventId, participantId } = req.params;
 
     try {
-        // Delete the association from event_participants
         const result = await pool.query(
             'DELETE FROM event_participants WHERE event_id = $1 AND participant_id = $2 RETURNING *',
             [eventId, participantId]
         );
-
-        // Check if the association was found and deleted
         if (result.rowCount === 0) {
             return res.status(404).json({ error: 'Association not found' });
         }
-
-        // Return a success message
         res.status(200).json({ message: 'Participant removed from event successfully' });
     } catch (error) {
         console.error('Failed to remove participant from event:', error);

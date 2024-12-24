@@ -21,21 +21,21 @@ export const setupRoutes = (app: Application): void => {
     // Event Routes
     app.get('/api/events', getAllEvents);
     app.get('/api/events/:id', getEventById);
-    app.get('/api/events/participants/:participantId', getAllEventsByParticipant); // New route to get all events for a participant
+    app.get('/api/events/participants/:participantId', getAllEventsByParticipant);
     app.post('/api/events', createEvent);
     app.put('/api/events/:id', updateEvent);
     app.delete('/api/events/:id', deleteEvent);
 
     // Participant Routes
-    app.get('/api/participants', getAllParticipants); // Get all participants
-    app.get('/api/participants/:id', getParticipantById); // Get one participant by ID
-    app.get('/api/events/:eventId/participants', getParticipantsByEvent); // Route to get participants with their event association
-    app.post('/api/participants', createParticipant); // Create a new participant
-    app.put('/api/participants/:id', updateParticipant); // Update a participant by ID
-    app.delete('/api/participants/:id', deleteParticipant); // Delete a participant by ID
+    app.get('/api/participants', getAllParticipants);
+    app.get('/api/participants/:id', getParticipantById);
+    app.get('/api/events/:eventId/participants', getParticipantsByEvent);
+    app.post('/api/participants', createParticipant);
+    app.put('/api/participants/:id', updateParticipant);
+    app.delete('/api/participants/:id', deleteParticipant);
 
-    // Event-Participant Association Routes
+    // Relations Routes
     app.get('/api/relations', getAllRelations);
-    app.post('/api/events/:eventId/participants/:participantId', addParticipantToEvent); // Add participant to event
-    app.delete('/api/events/:eventId/participants/:participantId', removeParticipantFromEvent);// Add route to delete the participant association
+    app.post('/api/events/:eventId/participants/:participantId', addParticipantToEvent);
+    app.delete('/api/events/:eventId/participants/:participantId', removeParticipantFromEvent);
 };

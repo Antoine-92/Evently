@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
   templateUrl: './participant-form.component.html',
   styleUrls: ['./participant-form.component.css'],
 })
+
 export class ParticipantFormComponent {
   participant = {
     name: '',

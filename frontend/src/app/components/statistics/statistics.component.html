@@ -1,19 +1,104 @@
-<div class="charts-container">
-  <highcharts-chart
-    [Highcharts]="Highcharts"
-    [options]="pieChartOptions"
-    style="width: 100%; height: 400px; display: block;"
-  ></highcharts-chart>
+<div class="container mt-4">
+  <h2>Event Statistics</h2>
+  <div *ngIf="loading" class="text-center">
+    <p>Loading statistics...</p>
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+  <div *ngIf="!loading && !errorMessage">
+    <div class="row mb-4">
 
-  <highcharts-chart
-    [Highcharts]="Highcharts"
-    [options]="barChartOptions"
-    style="width: 100%; height: 400px; display: block;"
-  ></highcharts-chart>
+      <!-- Total Participants -->
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title">Total Participants</h5>
+            <p class="card-text display-4">{{ totalParticipants }}</p>
+          </div>
+        </div>
+      </div>
 
-  <highcharts-chart
-    [Highcharts]="Highcharts"
-    [options]="lineChartOptions"
-    style="width: 100%; height: 400px; display: block;"
-  ></highcharts-chart>
+      <!-- Total Participantions -->
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title">Total Participations</h5>
+            <p class="card-text display-4">{{ totalParticipantions }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Average Participants -->
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title">Avg Participants/Event</h5>
+            <p class="card-text display-4">{{ avgParticipantsPerEvent | number:'1.0-1' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Peak season -->
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title">Peak Season</h5>
+            <p class="card-text display-4">{{ peakSeason }}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Charts section -->
+    <div class="charts-container d-flex justify-content-between">
+
+      <!-- Pie Charts for Types of Events -->
+      <div class="chart-container" style="width: 48%; margin-right: 2%;">
+        <highcharts-chart
+          [Highcharts]="Highcharts"
+          [options]="pieChartOptions"
+          style="width: 100%; height: 300px; display: block;"
+        ></highcharts-chart>
+      </div>
+    
+      <!-- Column Chart for Event by location -->
+      <div class="chart-container" style="width: 48%;">
+        <highcharts-chart
+          [Highcharts]="Highcharts"
+          [options]="barChartOptions1"
+          style="width: 100%; height: 300px; display: block;"
+        ></highcharts-chart>
+      </div>
+    </div>
+
+    <!-- Charts section -->
+    <div class="charts-container" style="display: flex; justify-content: space-between; gap: 20px;">
+      <!-- Column Chart for Participants by Event Type -->
+      <div class="chart-container" style="width: 48%; height: 300px;">
+        <highcharts-chart
+          [Highcharts]="Highcharts"
+          [options]="scatterChartOptions"
+          style="width: 100%; height: 100%; display: block;"
+        ></highcharts-chart>
+      </div>
+
+      <!-- Column Chart for Participant by Event Type -->
+      <div class="chart-container" style="width: 48%; height: 300px;">
+        <highcharts-chart
+          [Highcharts]="Highcharts"
+          [options]="barChartOptions2"
+          style="display: block; width: 100%; height: 100%;"
+        ></highcharts-chart>
+      </div>      
+    </div>
+
+    <!-- Line Chart for Event by Month -->
+    <highcharts-chart
+      [Highcharts]="Highcharts"
+      [options]="lineChartOptions"
+      style="width: 100%; height: 400px; display: block;"
+    ></highcharts-chart>
+  </div>
 </div>

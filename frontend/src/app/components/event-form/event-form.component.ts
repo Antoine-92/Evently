@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
   templateUrl: './event-form.component.html',
   styleUrls: ['./event-form.component.css'],
 })
+
 export class EventFormComponent implements OnInit {
   event = {
     name: '',
@@ -25,8 +26,19 @@ export class EventFormComponent implements OnInit {
   lastEventName = '';
   errorMessage = '';
   participantList: any[] = [];
-  eventTypes = ['conference', 'workshop', 'competition'];
-
+  eventTypes = [
+    'conference',
+    'workshop',
+    'competition',
+    'seminar',
+    'webinar',
+    'meetup',
+    'conference keynote',
+    'hackathon',
+    'training session',
+    'roundtable'
+  ];
+  
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
@@ -116,5 +128,4 @@ export class EventFormComponent implements OnInit {
     }
   }
   
-
 }

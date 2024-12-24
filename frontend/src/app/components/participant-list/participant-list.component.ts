@@ -14,6 +14,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
   templateUrl: './participant-list.component.html',
   styleUrls: ['./participant-list.component.css'],
 })
+
 export class ParticipantListComponent implements OnInit {
   rowData: any[] = [];
   colDefs: ColDef[] = [];
@@ -45,7 +46,6 @@ export class ParticipantListComponent implements OnInit {
         headerName: 'Events',
         field: 'events',
         valueFormatter: (params: any) => {
-          // Format the array of events into a comma-separated string
           return params.value ? params.value.join(', ') : '';
         },
         sortable: true,
@@ -57,11 +57,7 @@ export class ParticipantListComponent implements OnInit {
         cellRenderer: (params: any) => {
           const button = document.createElement('button');
           button.innerText = 'Add to Event';
-          button.style.backgroundColor = '#007bff';
-          button.style.color = '#fff';
-          button.style.border = 'none';
-          button.style.padding = '5px 10px';
-          button.style.cursor = 'pointer';
+          button.classList.add('btn', 'btn-primary', 'btn-sm');
           button.onclick = () => this.router.navigate(['/relations/participant', params.data.id]);
           return button;
         },
@@ -74,11 +70,7 @@ export class ParticipantListComponent implements OnInit {
         cellRenderer: (params: any) => {
           const button = document.createElement('button');
           button.innerText = 'Delete';
-          button.style.backgroundColor = '#dc3545';
-          button.style.color = '#fff';
-          button.style.border = 'none';
-          button.style.padding = '5px 10px';
-          button.style.cursor = 'pointer';
+          button.classList.add('btn', 'btn-danger', 'btn-sm');
           button.onclick = () => this.deleteRow(params.data);
           return button;
         },
@@ -87,14 +79,11 @@ export class ParticipantListComponent implements OnInit {
       },
     ];
   }
-  
-  
 
   private fetchParticipants(): void {
     this.loading = true;
     const apiUrl = 'http://localhost:3000/api/participants';
     const eventApiUrl = 'http://localhost:3000/api/events/participants';
-  
     this.http.get<any[]>(apiUrl).subscribe({
       next: async (participants: any[]) => {
         const participantPromises = participants.map(async (participant) => {
@@ -105,7 +94,6 @@ export class ParticipantListComponent implements OnInit {
             events: (events ?? []).map((event) => event.event_name) 
           };
         });
-  
         this.rowData = await Promise.all(participantPromises);
         this.loading = false;
       },
@@ -116,11 +104,9 @@ export class ParticipantListComponent implements OnInit {
     });
   }
   
-
   deleteRow(rowData: any): void {
     const deleteID = rowData.id;
     this.rowData = this.rowData.filter((row) => row.id !== deleteID);
-
     const apiUrl = `http://localhost:3000/api/participants/${rowData.id}`;
     this.http.delete(apiUrl).subscribe({
       next: () => {
@@ -134,4 +120,5 @@ export class ParticipantListComponent implements OnInit {
   navigateToCreateParticipant(): void {
     this.router.navigate(['/create-participant']);
   }
+
 }

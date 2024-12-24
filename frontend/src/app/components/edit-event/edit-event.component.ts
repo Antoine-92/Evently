@@ -15,6 +15,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
   templateUrl: './edit-event.component.html',
   styleUrls: ['./edit-event.component.css']
 })
+
 export class EditEventComponent {
   event = {
     name: '',
@@ -25,7 +26,19 @@ export class EditEventComponent {
     participants: [] as number[],
   };
 
-  eventTypes = ['conference', 'workshop', 'competition'];
+  eventTypes = [
+    'conference',
+    'workshop',
+    'competition',
+    'seminar',
+    'webinar',
+    'meetup',
+    'conference keynote',
+    'hackathon',
+    'training session',
+    'roundtable'
+  ];
+  
   participantList: any[] = [];
   showSuccessMessage = false;
   colDefs: ColDef[] = [];
@@ -86,23 +99,21 @@ export class EditEventComponent {
     return date.toISOString().split('T')[0]; // Extract only the "yyyy-MM-dd" part
   }
   
-
   onSubmit() {
     const eventId = this.route.snapshot.params['id'];
     const apiUrl = `http://localhost:3000/api/events/${eventId}`;
   
-    //const adjustedDate = this.addOneDay(this.event.date); // Adjust the date by adding one day
     const adjustedDate = this.event.date;
   
     const updatedEvent = {
       ...this.event,
-      date: `${adjustedDate}T00:00:00.000Z`, // Concatenate manually to avoid timezone issues
+      date: `${adjustedDate}T00:00:00.000Z`,
     };
   
     this.http.put(apiUrl, updatedEvent).subscribe({
       next: () => {
         this.showSuccessMessage = false;
-        this.router.navigate(['/events']);
+        this.router.navigate(['/events']); 
       },
       error: (err) => {
         console.error('Failed to update event:', err);
@@ -112,8 +123,8 @@ export class EditEventComponent {
   
   addOneDay(dateString: string): string {
     const date = new Date(dateString);
-    date.setDate(date.getDate() + 1); // Add one day to the date
-    return date.toISOString().split('T')[0]; // Return in "yyyy-MM-dd" format
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().split('T')[0];
   }
 
   private initializeGrid(): void {
@@ -138,7 +149,6 @@ export class EditEventComponent {
 
   removeParticipant(participantId: number): void {
     const apiUrl = `http://localhost:3000/api/events/${this.eventId}/participants/${participantId}`;
-
     this.http.delete(apiUrl).subscribe({
       next: () => {
         console.log(`Participant ${participantId} removed successfully.`);
@@ -154,10 +164,6 @@ export class EditEventComponent {
       },
     });
   }
-
-
-
-
 
   openAddParticipantModal() {
     this.router.navigate(['/relations/event/' , this.eventId]); //
