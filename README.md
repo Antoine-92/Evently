@@ -4,6 +4,8 @@ Evently is a comprehensive platform designed to manage events and participants e
 - **Frontend**: Built with Angular for an interactive user experience.
 - **Backend**: Developed using Node.js and PostgreSQL for robust and scalable data management.
 
+All the files are in TypeScript.
+
 ---
 
 ## **Authors**
@@ -140,7 +142,7 @@ CREATE TABLE event_participants (
    ```
 2. Install frontend dependencies:
    ```bash
-   npm install @angular/core @angular/router @angular/common @angular/forms @angular/common/http ag-grid-community ag-grid-angular
+   npm install @angular/core @angular/router @angular/common @angular/forms ag-grid-community ag-grid-angular highcharts
    ```
 3. Start the frontend server:
    ```bash
@@ -201,6 +203,77 @@ Evently/
 
 ---
 
+# Mock Data for Initializing the App
+
+### SQL Script to Insert Data
+
+
+1. Insert 15 AI-Related Events
+
+```sql
+INSERT INTO events (name, date, location, description, type)
+VALUES 
+('AI Revolution Conference', '2024-01-15', 'Paris', 'A gathering to discuss the future of AI across industries.', 'conference'),
+('Deep Learning Workshop', '2024-02-10', 'Lyon', 'Hands-on workshop on advanced deep learning techniques.', 'workshop'),
+('AI Coding Competition', '2024-03-05', 'Marseille', 'A competitive coding event focusing on AI challenges.', 'competition'),
+('AI Ethics Seminar', '2024-04-20', 'Nantes', 'Exploring the ethical implications of AI technologies.', 'seminar'),
+('AI in Healthcare Webinar', '2024-05-15', 'Online (France)', 'Discussing AI applications in the healthcare sector.', 'webinar'),
+('AI Enthusiasts Meetup', '2024-06-18', 'Lille', 'Networking meetup for AI professionals and enthusiasts.', 'meetup'),
+('AI Trends Keynote Conference', '2024-07-25', 'Paris', 'Keynote speeches from leading AI experts.', 'conference keynote'),
+('AI Hackathon 2024', '2024-08-30', 'Lyon', '24-hour hackathon focused on innovative AI solutions.', 'hackathon'),
+('Machine Learning Training', '2024-09-12', 'Nantes', 'Intensive training session on machine learning models.', 'training session'),
+('AI and Society Roundtable', '2024-10-20', 'Marseille', 'Roundtable discussion on AI\'s impact on society.', 'roundtable'),
+('Generative AI Workshop', '2024-11-10', 'Paris', 'Workshop on building generative AI models.', 'workshop'),
+('Natural Language Processing Seminar', '2024-11-25', 'Lille', 'Exploring NLP applications in various fields.', 'seminar'),
+('AI Startups Pitch Competition', '2024-12-05', 'Nantes', 'Pitch competition for AI-focused startups.', 'competition'),
+('Autonomous Systems Conference', '2024-12-15', 'Marseille', 'Conference on AI in autonomous systems.', 'conference'),
+('AI Leadership Roundtable', '2024-12-20', 'Lyon', 'Discussion with AI leaders on industry challenges.', 'roundtable');
+```
+2. Insert 15 Participants
+
+```sql
+INSERT INTO participants (name, email)
+VALUES 
+('Alice Martin', 'alice.martin@example.com'),
+('Bob Dupont', 'bob.dupont@example.com'),
+('Charlie Durand', 'charlie.durand@example.com'),
+('Diana Lefevre', 'diana.lefevre@example.com'),
+('Edward Girard', 'edward.girard@example.com'),
+('Fiona Roche', 'fiona.roche@example.com'),
+('George Blanchard', 'george.blanchard@example.com'),
+('Hannah Fontaine', 'hannah.fontaine@example.com'),
+('Ian Lambert', 'ian.lambert@example.com'),
+('Julia Noel', 'julia.noel@example.com'),
+('Kevin Petit', 'kevin.petit@example.com'),
+('Laura Bernard', 'laura.bernard@example.com'),
+('Maxime Vidal', 'maxime.vidal@example.com'),
+('Nina Moreau', 'nina.moreau@example.com'),
+('Olivier Fabre', 'olivier.fabre@example.com');
+```
+3. Relate 2 Participants to Each Event
+```sql
+INSERT INTO event_participants (event_id, participant_id)
+VALUES 
+(1, 1), (1, 2),
+(2, 3), (2, 4),
+(3, 5), (3, 6),
+(4, 7), (4, 8),
+(5, 9), (5, 10),
+(6, 11), (6, 12),
+(7, 13), (7, 14),
+(8, 15), (8, 1),
+(9, 2), (9, 3),
+(10, 4), (10, 5),
+(11, 6), (11, 7),
+(12, 8), (12, 9),
+(13, 10), (13, 11),
+(14, 12), (14, 13),
+(15, 14), (15, 15);
+```
+With this mock data, your application is pre-populated with AI-related events and participants, providing a realistic starting point for testing. These SQL scripts can be executed sequentially to initialize the database and establish relationships between events and participants.
+
+---
+
 ## **Troubleshooting**
 
 ### Common Issues
@@ -223,6 +296,4 @@ The API documentation is available at [http://localhost:3000/api-docs](http://lo
 
 ---
 
-
 With these detailed instructions, you’re ready to set up and run the Evently platform. Happy coding!
-
