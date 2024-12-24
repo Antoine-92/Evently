@@ -6,6 +6,15 @@ Evently is a comprehensive platform designed to manage events and participants e
 
 ---
 
+## **Authors**
+This project was created by:
+- **Antoine Richard**
+- **Charles PERIER**
+- **Thomas VALESI**
+- **Chloe DE WILDE**
+
+---
+
 ## **Getting Started**
 
 This step-by-step guide will walk you through the process of setting up and running the Evently platform on your local machine.
@@ -101,28 +110,24 @@ CREATE TABLE event_participants (
    ```bash
    cd backend
    ```
-2. Create a `.env` file for environment variables:
-   ```bash
-   touch .env
-   ```
-3. Add the following to your `.env` file (replace placeholders with your database credentials):
+
+2. replace placeholders with your database credentials into `config.ts` file:
    ```plaintext
    DB_USER=your_database_user
    DB_HOST=your_database_host
    DB_NAME=event_management
    DB_PASSWORD=your_database_password
    DB_PORT=5432
-   PORT=3000
    ```
-4. Install backend dependencies:
+3. Install backend dependencies:
    ```bash
    npm install pg dotenv express cors swagger-jsdoc swagger-ui-express
    ```
-5. Start the backend server:
+4. Start the backend server:
    ```bash
    npm run start
    ```
-6. Verify the backend is running:
+5. Verify the backend is running:
    Open your browser and navigate to [http://localhost:3000/api-docs](http://localhost:3000/api-docs).
 
 ---
@@ -157,17 +162,41 @@ CREATE TABLE event_participants (
 ```
 Evently/
 |
-|-- backend/          # Backend code (Node.js + Express)
-|   |-- config/       # Configuration files
-|   |-- controllers/  # API controllers
-|   |-- routes/       # API routes
-|   |-- index.ts      # Main entry point for backend
+|-- backend/                 # Backend code (Node.js + TypeScript)
+|   |-- src/
+|       |-- config.ts        # Configuration file
+|       |-- controllers.ts   # API controllers
+|       |-- routes.ts        # API routes
+|       |-- index.ts         # Main entry point for backend
+|   |-- .gitignore           # Git ignore file
+|   |-- package.json         # NPM configuration
+|   |-- package-lock.json    # NPM lock file
+|   |-- tsconfig.json        # TypeScript configuration
 |
-|-- frontend/         # Frontend code (Angular)
-|   |-- src/          # Angular source code
-|   |-- angular.json  # Angular project configuration
+|-- frontend/                # Frontend code (Angular)
+|   |-- .vscode/             # VSCode settings (optional)
+|   |-- evently-frontend/    # Angular project root
+|       |-- public/          # Public assets
+|       |-- src/             # Angular source code
+|           |-- app/         # Main app folder
+|               |-- components/  # Angular components
+|               |-- services/    # Angular services
+|               |-- app.component.*  # Root app files
+|               |-- app.routes.ts   # App routing
+|           |-- environments/ # Environment configurations
+|           |-- index.html    # Main HTML file
+|           |-- main.ts       # Angular bootstrap file
+|           |-- styles.css    # Global styles
+|       |-- .editorconfig     # Editor settings
+|       |-- .gitignore        # Git ignore file
+|       |-- README.md         # Frontend documentation
+|       |-- angular.json      # Angular project configuration
+|       |-- package.json      # NPM configuration
+|       |-- package-lock.json # NPM lock file
+|       |-- tsconfig.*.json   # TypeScript configurations
+|       |-- server.ts         # Optional server-side rendering
 |
-|-- README.md         # Project documentation
+|-- README.md                 # Project documentation
 ```
 
 ---
@@ -177,7 +206,7 @@ Evently/
 ### Common Issues
 1. **Database Connection Error**:
    - Ensure PostgreSQL is running.
-   - Verify `.env` variables are correctly configured.
+   - Verify `config.ts` variables are correctly configured.
    - Test the connection to the database manually using `psql` or a database client.
 
 2. **Port Conflicts**:
@@ -194,14 +223,6 @@ The API documentation is available at [http://localhost:3000/api-docs](http://lo
 
 ---
 
-## **Authors**
-This project was created by:
-- **Antoine Richard**
-- **Charles PERIER**
-- **Thomas VALESI**
-- **Chloe DE WILDE**
-
----
 
 With these detailed instructions, you’re ready to set up and run the Evently platform. Happy coding!
 
