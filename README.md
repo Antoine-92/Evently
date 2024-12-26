@@ -292,7 +292,7 @@ With this mock data, the application is pre-populated with AI-related events and
 
 ### CSV Export for Events and Participants
 
-The application now includes a robust CSV export feature, enabling users to easily retrieve and share event data or participant information in a structured format compatible with spreadsheet software.
+The application includes a CSV export feature, enabling users to easily retrieve and share event data or participant information in a structured format compatible with spreadsheet software.
 
 **Key Features:**
 - **Export Event Data:**  
