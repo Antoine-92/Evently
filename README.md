@@ -1,6 +1,6 @@
 # **Evently**
 
-Evently is a comprehensive platform designed to manage events and participants efficiently. This project is divided into two main components:
+Evently is a platform designed to manage events and participants. This project is divided into two main components:
 - **Frontend**: Built with Angular for an interactive user experience.
 - **Backend**: Developed using Node.js and PostgreSQL for robust and scalable data management.
 
@@ -115,11 +115,11 @@ CREATE TABLE event_participants (
 
 2. replace placeholders with your database credentials into `config.ts` file:
    ```plaintext
-   DB_USER=your_database_user
-   DB_HOST=your_database_host
-   DB_NAME=event_management
-   DB_PASSWORD=your_database_password
-   DB_PORT=5432
+    user: process.env.DB_USER || 'your_database_user',
+    host: process.env.DB_HOST || 'your_database_host',
+    database: process.env.DB_NAME || 'event_management',
+    password: process.env.DB_PASSWORD || 'your_database_password',
+    port: parseInt(process.env.DB_PORT || '5432'),
    ```
 3. Install backend dependencies:
    ```bash
@@ -164,7 +164,7 @@ CREATE TABLE event_participants (
 ```
 Evently/
 |
-|-- backend/                 # Backend code (Node.js + TypeScript)
+|-- backend/                 # Backend code (Node.js)
 |   |-- src/
 |       |-- config.ts        # Configuration file
 |       |-- controllers.ts   # API controllers
@@ -176,37 +176,35 @@ Evently/
 |   |-- tsconfig.json        # TypeScript configuration
 |
 |-- frontend/                # Frontend code (Angular)
-|   |-- .vscode/             # VSCode settings (optional)
+|   |-- .vscode/             # VSCode settings
 |   |-- evently-frontend/    # Angular project root
-|       |-- public/          # Public assets
-|       |-- src/             # Angular source code
-|           |-- app/         # Main app folder
-|               |-- components/  # Angular components
-|               |-- services/    # Angular services
-|               |-- app.component.*  # Root app files
-|               |-- app.routes.ts   # App routing
-|           |-- environments/ # Environment configurations
-|           |-- index.html    # Main HTML file
-|           |-- main.ts       # Angular bootstrap file
-|           |-- styles.css    # Global styles
-|       |-- .editorconfig     # Editor settings
-|       |-- .gitignore        # Git ignore file
-|       |-- README.md         # Frontend documentation
-|       |-- angular.json      # Angular project configuration
-|       |-- package.json      # NPM configuration
-|       |-- package-lock.json # NPM lock file
-|       |-- tsconfig.*.json   # TypeScript configurations
-|       |-- server.ts         # Optional server-side rendering
+|   |-- public/          # Public assets
+|   |-- src/             # Angular source code
+|       |-- app/         # Main app folder
+|           |-- components/  # Angular components
+|           |-- services/    # Angular services
+|           |-- app.component.*  # Root app files
+|           |-- app.routes.ts   # App routing
+|       |-- environments/ # Environment configurations
+|       |-- index.html    # Main HTML file
+|       |-- main.ts       # Angular bootstrap file
+|       |-- styles.css    # Global styles
+|   |-- .editorconfig     # Editor settings
+|   |-- .gitignore        # Git ignore file
+|   |-- README.md         # Frontend documentation
+|   |-- angular.json      # Angular project configuration
+|   |-- package.json      # NPM configuration
+|   |-- package-lock.json # NPM lock file
+|   |-- tsconfig.*.json   # TypeScript configurations
+|   |-- server.ts         # server-side rendering
 |
 |-- README.md                 # Project documentation
+|-- openapitools.json         # Config for OpenAPI Swagger documentation
 ```
 
 ---
 
-# Mock Data for Initializing the App
-
-### SQL Script to Insert Data
-
+## Mock Data for Initializing the App
 
 1. Insert 15 AI-Related Events
 
@@ -222,7 +220,7 @@ VALUES
 ('AI Trends Keynote Conference', '2024-07-25', 'Paris', 'Keynote speeches from leading AI experts.', 'conference keynote'),
 ('AI Hackathon 2024', '2024-08-30', 'Lyon', '24-hour hackathon focused on innovative AI solutions.', 'hackathon'),
 ('Machine Learning Training', '2024-09-12', 'Nantes', 'Intensive training session on machine learning models.', 'training session'),
-('AI and Society Roundtable', '2024-10-20', 'Marseille', 'Roundtable discussion on AI\'s impact on society.', 'roundtable'),
+('AI and Society Roundtable', '2024-10-20', 'Marseille', 'Roundtable discussion on AI impact on society.', 'roundtable'),
 ('Generative AI Workshop', '2024-11-10', 'Paris', 'Workshop on building generative AI models.', 'workshop'),
 ('Natural Language Processing Seminar', '2024-11-25', 'Lille', 'Exploring NLP applications in various fields.', 'seminar'),
 ('AI Startups Pitch Competition', '2024-12-05', 'Nantes', 'Pitch competition for AI-focused startups.', 'competition'),
@@ -270,7 +268,7 @@ VALUES
 (14, 12), (14, 13),
 (15, 14), (15, 15);
 ```
-With this mock data, your application is pre-populated with AI-related events and participants, providing a realistic starting point for testing. These SQL scripts can be executed sequentially to initialize the database and establish relationships between events and participants.
+With this mock data, the application is pre-populated with AI-related events and participants, providing a realistic starting point for testing.
 
 ---
 
@@ -283,7 +281,7 @@ With this mock data, your application is pre-populated with AI-related events an
    - Test the connection to the database manually using `psql` or a database client.
 
 2. **Port Conflicts**:
-   - If `3000` or `4200` is in use, update the `PORT` variable in `.env` or Angular CLI configuration.
+   - If `3000` or `4200` is in use, update the `PORT` variable in `config.ts` or Angular CLI configuration.
 
 3. **Dependency Issues**:
    - Run `npm install` again in the respective folder.
@@ -295,5 +293,6 @@ With this mock data, your application is pre-populated with AI-related events an
 The API documentation is available at [http://localhost:3000/api-docs](http://localhost:3000/api-docs). It provides detailed information about the available endpoints, request formats, and responses.
 
 ---
+
 
 With these detailed instructions, you’re ready to set up and run the Evently platform. Happy coding!
