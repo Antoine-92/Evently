@@ -178,28 +178,28 @@ Evently/
 |-- frontend/                # Frontend code (Angular)
 |   |-- .vscode/             # VSCode settings
 |   |-- evently-frontend/    # Angular project root
-|   |-- public/          # Public assets
-|   |-- src/             # Angular source code
-|       |-- app/         # Main app folder
+|   |-- public/              # Public assets
+|   |-- src/                 # Angular source code
+|       |-- app/             # Main app folder
 |           |-- components/  # Angular components
 |           |-- services/    # Angular services
 |           |-- app.component.*  # Root app files
 |           |-- app.routes.ts   # App routing
-|       |-- environments/ # Environment configurations
-|       |-- index.html    # Main HTML file
-|       |-- main.ts       # Angular bootstrap file
-|       |-- styles.css    # Global styles
-|   |-- .editorconfig     # Editor settings
-|   |-- .gitignore        # Git ignore file
-|   |-- README.md         # Frontend documentation
-|   |-- angular.json      # Angular project configuration
-|   |-- package.json      # NPM configuration
-|   |-- package-lock.json # NPM lock file
-|   |-- tsconfig.*.json   # TypeScript configurations
-|   |-- server.ts         # server-side rendering
+|       |-- environments/    # Environment configurations
+|       |-- index.html       # Main HTML file
+|       |-- main.ts          # Angular bootstrap file
+|       |-- styles.css       # Global styles
+|   |-- .editorconfig        # Editor settings
+|   |-- .gitignore           # Git ignore file
+|   |-- README.md            # Frontend documentation
+|   |-- angular.json         # Angular project configuration
+|   |-- package.json         # NPM configuration
+|   |-- package-lock.json    # NPM lock file
+|   |-- tsconfig.*.json      # TypeScript configurations
+|   |-- server.ts            # server-side rendering
 |
-|-- README.md                 # Project documentation
-|-- openapitools.json         # Config for OpenAPI Swagger documentation
+|-- README.md                # Project documentation
+|-- openapitools.json        # Config for OpenAPI Swagger documentation
 ```
 
 ---
@@ -285,6 +285,36 @@ With this mock data, the application is pre-populated with AI-related events and
 
 3. **Dependency Issues**:
    - Run `npm install` again in the respective folder.
+
+---
+
+## Advanced Features
+
+### CSV Export for Events and Participants
+
+The application now includes a robust CSV export feature, enabling users to easily retrieve and share event data or participant information in a structured format compatible with spreadsheet software.
+
+**Key Features:**
+- **Export Event Data:**  
+  The exported CSV file for events includes the following columns:
+  - Event ID  
+  - Event Name  
+  - Type  
+  - Date  
+  - Location  
+  - Description  
+  - Participants (names listed as a comma-separated string)  
+
+- **Export All Participants:**  
+  The exported CSV file for participants includes the following columns:
+  - Participant ID  
+  - Name  
+  - Email  
+  - Events (names listed as a comma-separated string)
+
+**How It Works:**  
+- The file is generated dynamically based on the current data in the application.  
+- Users can download the CSV file with a single click.
 
 ---
 

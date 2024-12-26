@@ -1,13 +1,23 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Participants List</h2>
-        <button 
-          class="btn btn-primary" 
-          (click)="navigateToCreateParticipant()"
-          style="font-size: 16px;"
-        >
-          + Create Participant
-        </button>
+        <div>
+          <button 
+            class="btn btn-secondary me-2" 
+            (click)="exportToCSV()"
+            style="font-size: 16px;"
+          >
+            <i class="bi bi-file-earmark-spreadsheet"></i> Export to CSV
+          </button>
+          <button 
+            class="btn btn-primary" 
+            (click)="navigateToCreateParticipant()"
+            style="font-size: 16px;"
+          >
+            + Create Participant
+          </button>
+      </div>
     </div>
 
     <!-- Participant List with AR-GRID library -->

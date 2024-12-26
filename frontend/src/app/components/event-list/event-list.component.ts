@@ -28,6 +28,7 @@ export class EventListComponent implements OnInit {
       next: (data) => {
         this.events = data.map(event => ({
           ...event,
+          id: event.event_id,
           participants: event.participants || [] // Assurez-vous que la liste des participants est toujours initialisée
         }));
       },
@@ -120,5 +121,30 @@ export class EventListComponent implements OnInit {
     if (!text) return '';
     return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
   }
+
+  exportToCSV(): void {
+    const headers = ['ID', 'Event Name', 'Type', 'Date', 'Location', 'Description', 'Participants'];
+    const rows = this.events.map(event => [
+      event.id,
+      event.event_name,
+      this.capitalize(event.type),
+      this.formatDate(event.date),
+      event.location,
+      event.description,
+      event.participants.map((p: { name: any; }) => p.name).join(', ')
+    ]);
   
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(value => `"${value}"`).join(','))
+    ].join('\n');
+  
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'events.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 }

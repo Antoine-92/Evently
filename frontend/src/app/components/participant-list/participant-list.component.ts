@@ -32,7 +32,6 @@ export class ParticipantListComponent implements OnInit {
   ) => string = (params: PaginationNumberFormatterParams) => {
     return "[" + params.value.toLocaleString() + "]";
   };
-  
 
   constructor(
     private http: HttpClient,
@@ -131,4 +130,26 @@ export class ParticipantListComponent implements OnInit {
     this.router.navigate(['/create-participant']);
   }
 
+  exportToCSV(): void {
+    const headers = ['ID', 'Name', 'Email', 'Events'];
+    const rows = this.rowData.map(participant => [
+        participant.id,
+        participant.name,
+        participant.email,
+        participant.events.join(', ') // Joining event names
+    ]);
+
+    const csvContent = [
+        headers.join(','),
+        ...rows.map(row => row.map(value => `"${value}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'participants.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 }
