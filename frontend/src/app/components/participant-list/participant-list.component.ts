@@ -37,9 +37,9 @@ export class ParticipantListComponent implements OnInit {
     private http: HttpClient,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: object,
-  ) {
-    this.isBrowser = isPlatformBrowser(PLATFORM_ID);
-  }
+    ) {
+      this.isBrowser = isPlatformBrowser(PLATFORM_ID);
+    }
 
   ngOnInit(): void {
     this.initializeGrid();

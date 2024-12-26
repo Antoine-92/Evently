@@ -36,7 +36,7 @@ export class ParticipantFormComponent {
 
         setTimeout(() => {
           this.successMessage = '';
-          this.router.navigate(['/participants']);
+          this.router.navigate(['/participant']);
         }, 3000);
       },
       error: (error) => {
