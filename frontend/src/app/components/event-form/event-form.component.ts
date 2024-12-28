@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 export class EventFormComponent implements OnInit {
   event = {
     name: '',
-    date: '',
+    date: '', 
     location: '',
     description: '',
     type: '',
@@ -63,10 +63,8 @@ export class EventFormComponent implements OnInit {
 
   onSubmit() {
     const apiUrl = 'http://localhost:3000/api/events';
-    console.log('Event data:', this.event);
     this.http.post(apiUrl, this.event).subscribe({
       next: async (response: any) => {
-        console.log('Event created successfully:', response);
 
         // Add participants to the event
         for (const participantId of this.event.participants) {
@@ -127,5 +125,4 @@ export class EventFormComponent implements OnInit {
       console.error('Event target is null or does not have the "checked" property.');
     }
   }
-  
 }

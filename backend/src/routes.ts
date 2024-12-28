@@ -1,4 +1,8 @@
 import { Application } from 'express';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { pool } from './config';
+import dotenv from 'dotenv';
 import {
     getAllEvents,
     createEvent,
@@ -14,8 +18,12 @@ import {
     removeParticipantFromEvent,
     getParticipantsByEvent,
     getAllEventsByParticipant,
-    getAllRelations
+    getAllRelations,
+    loginUser,
+    registerUser
 } from './controllers';
+
+dotenv.config();
 
 export const setupRoutes = (app: Application): void => {
     // Event Routes
@@ -38,4 +46,7 @@ export const setupRoutes = (app: Application): void => {
     app.get('/api/relations', getAllRelations);
     app.post('/api/events/:eventId/participants/:participantId', addParticipantToEvent);
     app.delete('/api/events/:eventId/participants/:participantId', removeParticipantFromEvent);
+
+    app.post('/api/auth/login', loginUser);
+    app.post('/api/auth/register', registerUser);
 };

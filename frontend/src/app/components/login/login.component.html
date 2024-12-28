@@ -1,0 +1,55 @@
+<div class="login-container container mt-4 justify-content-center col-md-6">
+  <h2 class="mb-4">LogIn</h2>
+  <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Email:</label>
+      <input
+        type="email"
+        id="email"
+        class="form-control"
+        [(ngModel)]="email"
+        name="email"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Password:</label>
+      <div class="input-group">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          id="password"
+          class="form-control"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="togglePasswordVisibility()"
+        >
+          {{ showPassword ? 'Hide' : 'Show' }}
+        </button>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary w-100"
+      [disabled]="!loginForm.valid"
+    >
+      Login
+    </button>
+  </form>
+  <div class="d-flex justify-content-end align-items-center mt-3">
+    <p class="mb-0 me-2">Don't have an account?</p>
+    <button class="btn btn-secondary" (click)="navigateToSignUp()">
+      Register
+    </button>
+  </div>
+</div>

@@ -74,7 +74,7 @@ export class ParticipantListComponent implements OnInit {
         filter: false,
       },
       {
-        headerName: 'Actions',
+        headerName: 'Delete Event',
         field: 'actions',
         cellRenderer: (params: any) => {
           const button = document.createElement('button');

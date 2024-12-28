@@ -8,17 +8,23 @@ import { EditEventComponent } from './components/edit-event/edit-event.component
 import { ParticipantFormComponent } from './components/participant-form/participant-form.component';
 import { ParticipantListComponent } from './components/participant-list/participant-list.component';
 import { RelationFormComponent } from './components/relation-form/relation-form.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
+import { SignupComponent } from './components/signup/signup.component';
+
 
 export const routes: Routes = [
-  { path: 'events', component: EventListComponent },
+  { path: 'events', component: EventListComponent, canActivate: [AuthGuard] },
   { path: 'create-event', component: EventFormComponent },
-  { path: 'create-participant', component: ParticipantFormComponent },
-  { path: 'participant', component: ParticipantListComponent },
-  { path: 'relations', component: RelationFormComponent },
-  { path: 'relations/event/:eventId', component: RelationFormComponent },
-  { path: 'relations/participant/:participantId', component: RelationFormComponent },
-  { path: 'edit-event/:id', component: EditEventComponent },
-  { path: 'statistics', component: StatisticsComponent },
+  { path: 'create-participant', component: ParticipantFormComponent, canActivate: [AuthGuard] },
+  { path: 'participant', component: ParticipantListComponent, canActivate: [AuthGuard] },
+  { path: 'relations', component: RelationFormComponent, canActivate: [AuthGuard] },
+  { path: 'relations/event/:eventId', component: RelationFormComponent, canActivate: [AuthGuard] },
+  { path: 'relations/participant/:participantId', component: RelationFormComponent, canActivate: [AuthGuard] },
+  { path: 'edit-event/:id', component: EditEventComponent, canActivate: [AuthGuard] },
+  { path: 'statistics', component: StatisticsComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
   { path: '', redirectTo: '/events', pathMatch: 'full' },
   { path: '**', redirectTo: '/events' },
 ];
@@ -26,7 +32,7 @@ export const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
   ]
 })
 export class AppRoutingModule{}

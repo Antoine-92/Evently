@@ -95,6 +95,17 @@ CREATE TABLE event_participants (
 );
 ```
 
+#### **Create the `users` Table**
+```sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,               
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+```
+
 5. Verify the tables have been created:
    ```sql
    \dt
@@ -103,6 +114,7 @@ CREATE TABLE event_participants (
    - `events`
    - `participants`
    - `event_participants`
+   - `users`
 
 ---
 
@@ -123,7 +135,7 @@ CREATE TABLE event_participants (
    ```
 3. Install backend dependencies:
    ```bash
-   npm install pg dotenv express cors swagger-jsdoc swagger-ui-express
+   npm install pg dotenv express cors swagger-jsdoc swagger-ui-express bcrypt jsonwebtoken @types/bcrypt @types/jsonwebtoken
    ```
 4. Start the backend server:
    ```bash
@@ -142,7 +154,7 @@ CREATE TABLE event_participants (
    ```
 2. Install frontend dependencies:
    ```bash
-   npm install @angular/core @angular/router @angular/common @angular/forms ag-grid-community ag-grid-angular highcharts
+   npm install @angular/core @angular/router @angular/common @angular/forms ag-grid-community ag-grid-angular highcharts primeng primeicons
    ```
 3. Start the frontend server:
    ```bash
@@ -182,6 +194,7 @@ Evently/
 |   |-- src/                 # Angular source code
 |       |-- app/             # Main app folder
 |           |-- components/  # Angular components
+|           |-- guards/      # Authentification guard to protect app
 |           |-- services/    # Angular services
 |           |-- app.component.*  # Root app files
 |           |-- app.routes.ts   # App routing
@@ -315,6 +328,53 @@ The application includes a CSV export feature, enabling users to easily retrieve
 **How It Works:**  
 - The file is generated dynamically based on the current data in the application.  
 - Users can download the CSV file with a single click.
+
+
+### Authentication with JWT
+
+The application features a robust authentication system using JSON Web Tokens (JWT).
+
+#### Key Features
+- **User Login:**  
+  - Users can log in with their email and password to receive a JWT token for authenticated access.  
+  - The token is valid for 1 hour and is used to authorize subsequent requests.
+
+- **User Registration:**  
+  - New users can register by providing an email and password.  
+  - Passwords are securely hashed before storage in the database to ensure user data safety.
+
+- **Authentication Guard:**  
+  - An `AuthGuard` is implemented to protect routes in the application.  
+  - If a valid JWT token is not present in `localStorage`, the user is redirected to the login page.
+
+#### How It Works
+1. **Login Workflow:**  
+   - Users send their credentials (`email` and `password`) to the `/api/auth/login` endpoint.  
+   - The server validates the credentials and generates a JWT token upon successful authentication.  
+   - The token is stored in the client's `localStorage` and used for subsequent requests.
+
+2. **Registration Workflow:**  
+   - New users send their email and password to the `/api/auth/register` endpoint.  
+   - The server hashes the password, checks for duplicate emails, and creates a new user in the database.
+
+3. **Route Protection:**  
+   - The `AuthGuard` checks for the presence of a valid token in `localStorage`.  
+   - If no token is found, the user is redirected to the login page.
+
+#### Endpoints
+- `POST /api/auth/login`: Authenticates users and returns a JWT token.
+- `POST /api/auth/register`: Registers new users and stores their credentials securely.
+
+#### Example Workflow
+1. **Register**:  
+   A user creates an account through the registration form.
+   
+2. **Login**:  
+   The user logs in and receives a JWT token, which is automatically stored.
+
+3. **Access Protected Routes**:  
+   The token is included in the `Authorization` header for requests to protected endpoints, granting the user access.
+
 
 ---
 

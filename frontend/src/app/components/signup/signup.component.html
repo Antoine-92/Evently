@@ -1,0 +1,95 @@
+<div class="signup-container container mt-4 justify-content-center col-md-6">
+    <h2 class="mb-4">Register</h2>
+  
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+  
+    <div class="mb-3">
+      <label for="name" class="form-label">Name:</label>
+      <input
+        type="text"
+        id="name"
+        class="form-control"
+        [(ngModel)]="name"
+        name="name"
+        required
+      />
+    </div>
+  
+    <div class="mb-3">
+      <label for="email" class="form-label">Email:</label>
+      <input
+        type="email"
+        id="email"
+        class="form-control"
+        [(ngModel)]="email"
+        name="email"
+        required
+      />
+    </div>
+  
+    <div class="mb-3">
+      <label for="password" class="form-label">Password:</label>
+      <div class="input-group">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          id="password"
+          class="form-control"
+          [(ngModel)]="password"
+          name="password"
+          required
+          minlength="6"
+          autocomplete="new-password"
+        />
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="togglePasswordVisibility('password')"
+        >
+          {{ showPassword ? 'Hide' : 'Show' }}
+        </button>
+      </div>
+    </div>
+  
+    <div class="mb-3">
+      <label for="confirmPassword" class="form-label">Confirm Password:</label>
+      <div class="input-group">
+        <input
+          [type]="showConfirmPassword ? 'text' : 'password'"
+          id="confirmPassword"
+          class="form-control"
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+          required
+          autocomplete="new-password"
+        />
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="togglePasswordVisibility('confirmPassword')"
+        >
+          {{ showConfirmPassword ? 'Hide' : 'Show' }}
+        </button>
+      </div>
+    </div>
+  
+    <button
+      class="btn btn-primary w-100 mb-3"
+      (click)="onSubmit()"
+      [disabled]="!name || !email || !password || !confirmPassword"
+    >
+      Register
+    </button>
+  
+    <div class="d-flex justify-content-end align-items-center mt-3">
+      <p class="mb-0 me-2">Already have an account?</p>
+      <button
+        class="btn btn-secondary"
+        (click)="navigateToLogin()"
+      >
+        Login
+      </button>
+    </div>
+  </div>
+  

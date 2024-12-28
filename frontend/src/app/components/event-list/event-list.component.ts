@@ -29,7 +29,7 @@ export class EventListComponent implements OnInit {
         this.events = data.map(event => ({
           ...event,
           id: event.event_id,
-          participants: event.participants || [] // Assurez-vous que la liste des participants est toujours initialisée
+          participants: event.participants || []
         }));
       },
       error: (err) => {
@@ -72,48 +72,46 @@ export class EventListComponent implements OnInit {
   getTypeStyle(type: string): string {
     const typeLower = type.toLowerCase();
 
-    // Define a map of event types to unique styles
     const typeStyles: { [key: string]: string } = {
-        'conference': 'success',         // Green
-        'workshop': 'warning',           // Orange
-        'competition': 'danger',         // Red
-        'seminar': 'info',               // Light Blue
-        'webinar': 'primary',            // Blue
-        'meetup': 'secondary',           // Grey
-        'conference keynote': 'dark',   // Dark
-        'hackathon': 'purple',           // Purple (Custom)
-        'training session': 'lime',      // Lime Green (Custom)
-        'roundtable': 'teal',            // Teal (Custom)
+        'conference': 'success',   
+        'workshop': 'warning',           
+        'competition': 'danger',     
+        'seminar': 'info',               
+        'webinar': 'primary',      
+        'meetup': 'secondary',         
+        'conference keynote': 'dark',   
+        'hackathon': 'purple',        
+        'training session': 'lime',      
+        'roundtable': 'teal',          
     };
 
-    // Return the style for the type or the default style
-    return typeStyles[typeLower] || 'primary'; // Default to Blue for general cases
+    return typeStyles[typeLower] || 'primary';
   }
 
   getTypeIcon(type: string): string {
     switch (type.toLowerCase()) {
       case 'conference':
-        return 'bi-people-fill'; // Icon for conference
+        return 'bi-people-fill'; 
       case 'workshop':
-        return 'bi-tools'; // Icon for workshop
+        return 'bi-tools'; 
       case 'competition':
-        return 'bi-trophy-fill'; // Icon for competition
+        return 'bi-trophy-fill';
       case 'seminar':
-        return 'bi-microphone'; // Icon for seminar
+        return 'bi-microphone'; 
       case 'webinar':
-        return 'bi-tv'; // Icon for webinar
+        return 'bi-tv'; 
       case 'meetup':
-        return 'bi-person-lines-fill'; // Icon for meetup
+        return 'bi-person-lines-fill'; 
       case 'conference keynote':
-        return 'bi-flag-fill'; // Icon for conference keynote
+        return 'bi-flag-fill'; 
       case 'hackathon':
-        return 'bi-brain'; // Icon for hackathon
+        return 'bi-brain'; 
       case 'training session':
-        return 'bi-person-check'; // Icon for training session
+        return 'bi-person-check'; 
       case 'roundtable':
-        return 'bi-table'; // Icon for roundtable
+        return 'bi-table';
       default:
-        return 'bi-journal-code'; // Icon for general event
+        return 'bi-journal-code';
     }
   }
 

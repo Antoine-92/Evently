@@ -1,5 +1,9 @@
 import { Request, Response } from 'express';
 import { pool } from './config';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+const jwtSecret = process.env.JWT_SECRET || '94dddc83ca1e12da906ac626861d2f73306630a6d8887673274acbc99cc79c8668fcf372f2c2d172503401f13d8175379b0a6fdb7428739c62ce2988889696ea6c2de408085592fba053918657d79c505537fa0675d6c44136b0d8289320babcecc3cbd25c61ddcdec6e9b4f35cabba900f7613366bc323adcaf5797b2845a622c02db3759f2ddf52b6c991c1a18b6412c546a9e8d401fc068917b6e25d18fbc95e1c0a367811a39423b14e24b351ba901a9b646cc9c3158744e5c6fd394b14f5d4a4ef884d082bb7ba483e8aaa0207996774035648374c93e526372aaa8b53761c6b0e4ae4c6e5afea9d8addb07c60c3845bf328f5cb92622947db8dc0ff8f3';
 
 /**
  * @swagger
@@ -10,6 +14,8 @@ import { pool } from './config';
  *     description: API for managing participants
  *   - name: Relations
  *     description: API for managing relations between events and participants
+ *   - name: Authentication
+ *     description: API for login/register users
  */
 
 /**
@@ -803,5 +809,115 @@ export const removeParticipantFromEvent = async (req: Request, res: Response) =>
     } catch (error) {
         console.error('Failed to remove participant from event:', error);
         res.status(500).json({ error: 'Failed to remove participant from event' });
+    }
+};
+
+
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     tags:
+ *       - Authentication
+ *     summary: Log in a user
+ *     description: Authenticates a user and returns a JWT token.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful, returns JWT token.
+ *       400:
+ *         description: Missing email or password.
+ *       401:
+ *         description: Invalid email or password.
+ *       500:
+ *         description: Internal server error.
+ */
+export const loginUser = async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Email and password are required.' });
+    }
+
+    try {
+        const userResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+        const user = userResult.rows[0];
+
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.status(401).json({ message: 'Invalid email or password.' });
+        }
+
+        const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1h' });
+
+        res.status(200).json({ token });
+    } catch (error) {
+        console.error('Error during login:', error);
+        res.status(500).json({ message: 'Internal server error. Please try again later.' });
+    }
+};
+
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     tags:
+ *       - Authentication
+ *     summary: Register a new user
+ *     description: Creates a new user with a hashed password.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: User registered successfully.
+ *       400:
+ *         description: Missing email or password.
+ *       409:
+ *         description: Email is already in use.
+ *       500:
+ *         description: Internal server error.
+ */
+export const registerUser = async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Email and password are required.' });
+    }
+
+    try {
+        const existingUserResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+        if (existingUserResult.rows.length > 0) {
+            return res.status(409).json({ message: 'Email is already in use.' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUserResult = await pool.query(
+            'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email',
+            [email, hashedPassword]
+        );
+
+        const newUser = newUserResult.rows[0];
+        res.status(201).json({ message: 'User registered successfully', user: newUser });
+    } catch (error) {
+        console.error('Error registering user:', error);
+        res.status(500).json({ message: 'Internal server error. Please try again later.' });
     }
 };
