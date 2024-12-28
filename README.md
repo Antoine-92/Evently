@@ -142,7 +142,7 @@ CREATE TABLE users (
    npm run start
    ```
 5. Verify the backend is running:
-   Open your browser and navigate to [http://localhost:3000/api-docs](http://localhost:3000/api-docs).
+   Open your browser and navigate to [http://localhost:3000/api/docs](http://localhost:3000/api/docs).
 
 ---
 
@@ -168,6 +168,89 @@ CREATE TABLE users (
 
 1. Visit the frontend interface at [http://localhost:4200](http://localhost:4200).
 2. Perform actions like creating events, adding participants, and associating participants with events to ensure everything is working.
+
+---
+
+## **Application Pages**
+
+Below is a detailed description of the main pages in the Evently application, outlining their features and functionalities:
+
+
+### **1. Events Page**
+This page displays a comprehensive list of all events with the following details for each event:
+- **Name**: The name of the event.
+- **Type**: The category or type of the event.
+- **Date**: The scheduled date of the event.
+- **Location**: The venue or place where the event will occur.
+- **Description**: A brief description of the event.
+- **Participants**: A list of all participants associated with the event.
+
+**Key Features**:
+- **Edit Event**: Modify all attributes of an event directly from this page.
+- **Delete Event**: Remove an event and its associated data.
+- **Export to CSV**: Download the list of events, including their details and participants, in a CSV file format.
+
+
+### **2. Create Event Page**
+This page allows users to create a new event. Users can:
+- Add all event properties, including name, type, date, location, and description.
+- Assign participants to the event during creation.
+
+
+### **3. Edit Event Page**
+On this page, users can:
+- Modify any attribute of an existing event, such as its name, type, date, location, or description.
+- Add new participants to the event.
+- Remove participants from the event.
+
+### **4. Participants Page**
+The participants page displays all participants in an **AG Grid** with the following attributes:
+- **Name**: The full name of the participant.
+- **Email**: The participant’s email address.
+- **Event**: The list of event attended by participant
+
+**Key Features**:
+- **Add to Events**: Assign participants to one or more events.
+- **Remove Participants**: Delete participants from the database.
+- **Export to CSV**: Download the list of participants with their details in a CSV file.
+
+### **5. Create Participant Page**
+This page allows users to create a new participant by:
+- Adding the participant's name.
+- Adding the participant's email address.
+
+### **6. Relations Page**
+The relations page is designed to facilitate creating relationships between events and participants.
+
+**Features**:
+- **Endpoint Relations**:
+  - `relations/event/:eventId`: Pre-fills the form with the details of the specified event.
+  - `relations/participant/:participantId`: Pre-fills the form with the details of the specified participant.
+
+Users can easily establish connections between participants and events using these endpoints.
+
+### **7. Statistics Page**
+This page provides a dashboard showcasing key statistics and visualizations for events and participants.
+
+**Graphs and Visualizations**:
+- **Event Statistics by Type**:  
+  A **pie chart** representing the distribution of events across different types.
+
+- **Event by Location**:  
+  A **column chart** displaying the number of events per location:
+  - **Green Bars**: Locations with the highest number of participants.
+  - **Red Bars**: Locations with the least number of participants.
+
+- **Participant by Location**:  
+  A **column chart** showing the distribution of participants across different locations:
+  - **Green Bars**: Locations with the most participants.
+  - **Red Bars**: Locations with the fewest participants.
+
+- **Participant by Event Type**:  
+  A **column chart** illustrating the number of participants for each type of event.
+
+- **Event by Month**:  
+  A **line chart** plotting the number of events organized each month throughout the year.
 
 ---
 
@@ -334,7 +417,7 @@ The application includes a CSV export feature, enabling users to easily retrieve
 
 The application features a robust authentication system using JSON Web Tokens (JWT).
 
-#### Key Features
+**Key Features:**
 - **User Login:**  
   - Users can log in with their email and password to receive a JWT token for authenticated access.  
   - The token is valid for 1 hour and is used to authorize subsequent requests.
@@ -347,7 +430,7 @@ The application features a robust authentication system using JSON Web Tokens (J
   - An `AuthGuard` is implemented to protect routes in the application.  
   - If a valid JWT token is not present in `localStorage`, the user is redirected to the login page.
 
-#### How It Works
+**How it works:**
 1. **Login Workflow:**  
    - Users send their credentials (`email` and `password`) to the `/api/auth/login` endpoint.  
    - The server validates the credentials and generates a JWT token upon successful authentication.  
@@ -383,7 +466,7 @@ To secure backend routes, the application uses an authentication middleware that
 
 ## **API Documentation**
 
-The API documentation is available at [http://localhost:3000/api-docs](http://localhost:3000/api-docs). It provides detailed information about the available endpoints, request formats, and responses.
+The API documentation is available at [http://localhost:3000/api/docs](http://localhost:3000/api/docs). It provides detailed information about the available endpoints, request formats, and responses.
 
 ---
 

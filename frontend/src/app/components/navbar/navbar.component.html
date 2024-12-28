@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light ms-3">
-  <a class="navbar-brand" href="#">Evently</a>
+  <a class="navbar-brand mb-0 h1" href="#">Evently</a>
   <ul class="navbar-nav">
     <li *ngIf="isLoggedIn" class="nav-item">
       <a class="nav-link" routerLink="/events" routerLinkActive="active">Events</a>
@@ -14,11 +14,13 @@
       <a class="nav-link" routerLink="/statistics" routerLinkActive="active">Statistics dashboard</a>
     </li>
   </ul>
-  <button
-    *ngIf="isLoggedIn"
-    class="btn btn-danger ms-auto me-3"
-    (click)="onLogout()"
-  >
-    Disconnect
-  </button>
+  <div *ngIf="isLoggedIn" class="ms-auto me-3 d-flex align-items-center">
+    <span class="me-3">Welcome {{ userName }}</span>
+    <button
+      class="btn btn-outline-danger"
+      (click)="onLogout()"
+    >
+      Disconnect
+    </button>
+  </div>
 </nav>

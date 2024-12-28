@@ -25,9 +25,17 @@ export class LoginComponent {
     const credentials = { email: this.email, password: this.password };
     this.errorMessage = ''; // Clear any previous error message
 
+    const userName = this.email
+      .split('@')[0] // Extract part before "@"
+      .replace(/[0-9]/g, '') // Remove all digits
+      .replace('.', ' ') // Replace dots with spaces
+      .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase()); // Capitalize each word
+
+
     this.http.post('http://localhost:3000/api/auth/login', credentials).subscribe({
       next: (response: any) => {
         localStorage.setItem('token', response.token);
+        localStorage.setItem('userName', userName);
         this.router.navigate(['/events']);
       },
       error: (error) => {

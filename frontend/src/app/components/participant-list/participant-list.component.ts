@@ -129,6 +129,7 @@ export class ParticipantListComponent implements OnInit {
     this.http.delete(apiUrl, { headers: this.getHeaders() }).subscribe({
       next: () => {
         this.successMessage = 'Participant deleted successfully!';
+        this.fetchParticipants();
         console.log('Participant deleted successfully!');
       },
       error: (err) => console.error('Error deleting participant:', err),
@@ -145,7 +146,7 @@ export class ParticipantListComponent implements OnInit {
         participant.id,
         participant.name,
         participant.email,
-        participant.events.join(', ') // Joining event names
+        participant.events.join(', ')
     ]);
 
     const csvContent = [

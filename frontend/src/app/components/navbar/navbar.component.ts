@@ -16,8 +16,13 @@ export class NavbarComponent {
     return !!localStorage.getItem('token');
   }
 
+  get userName(): string | null {
+    return localStorage.getItem('userName');
+  }
+
   onLogout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('userName');
     this.router.navigate(['/login']);
   }
 }
