@@ -33,6 +33,10 @@ export class RelationFormComponent implements OnInit {
     this.fetchParticipants();
     this.fetchEvents();
     this.fetchRelations();
+    this.initForm();
+  }
+
+  private initForm(){
     this.route.params.subscribe((params) => {
       const eventId = params['eventId'];
       const participantId = params['participantId'];
@@ -117,6 +121,7 @@ export class RelationFormComponent implements OnInit {
         this.fetchRelations();
         this.selectedEventId = null;
         this.selectedParticipantId = null;
+        this.initForm();
       },
       (error) => {
         console.error('Failed to add participant to event', error);

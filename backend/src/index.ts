@@ -32,20 +32,6 @@ const swaggerOptions = {
                 description: 'Local Development Server',
             },
         ],
-        components: {
-            securitySchemes: {
-                bearerAuth: {
-                    type: 'http',
-                    scheme: 'bearer',
-                    bearerFormat: 'JWT',
-                },
-            },
-        },
-        security: [
-            {
-                bearerAuth: [], 
-            },
-        ],
         tags: [
             {
                 name: 'Events',
