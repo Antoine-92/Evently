@@ -375,6 +375,11 @@ The application features a robust authentication system using JSON Web Tokens (J
 3. **Access Protected Routes**:  
    The token is included in the `Authorization` header for requests to protected endpoints, granting the user access.
 
+#### Protecting Backend Routes
+
+To secure backend routes, the application uses an authentication middleware that verifies the presence and validity of a JWT token in the `Authorization` header of incoming requests. If the token is missing, invalid, or expired, the middleware denies access with appropriate status codes (`401 Unauthorized` or `403 Forbidden`). For valid tokens, the middleware decodes the token, attaches the user information to the request object, and allows access to the protected routes. This ensures only authenticated users can access sensitive resources, with any unauthorized requests being gracefully handled through descriptive error responses.
+
+
 
 ---
 

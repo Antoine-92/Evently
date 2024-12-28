@@ -2,6 +2,7 @@ import { Application } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { pool } from './config';
+import { authenticateToken } from './authMiddleware';
 import dotenv from 'dotenv';
 import {
     getAllEvents,
@@ -27,7 +28,7 @@ dotenv.config();
 
 export const setupRoutes = (app: Application): void => {
     // Event Routes
-    app.get('/api/events', getAllEvents);
+    app.get('/api/events', authenticateToken, getAllEvents);
     app.get('/api/events/:id', getEventById);
     app.get('/api/events/participants/:participantId', getAllEventsByParticipant);
     app.post('/api/events', createEvent);
