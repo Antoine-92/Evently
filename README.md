@@ -46,7 +46,78 @@ Before you begin, ensure you have the following tools installed:
 
 ---
 
-## **Step 2: Set Up the PostgreSQL Database**
+## Step 2: Set Up the PostgreSQL Database
+
+### With a sql script
+
+#### Create the SQL Script
+1. Create a file named `setup_event_management.sql` and include the following content:
+
+   ```sql
+   -- Create the `events` table
+   CREATE SEQUENCE events_id_seq;
+
+   CREATE TABLE events (
+       id SERIAL PRIMARY KEY,
+       name VARCHAR(100) NOT NULL,
+       date DATE NOT NULL,
+       location VARCHAR(150),
+       description TEXT,
+       type VARCHAR(50) NOT NULL DEFAULT 'general'
+   );
+
+   -- Create the `participants` table
+   CREATE SEQUENCE participants_id_seq;
+
+   CREATE TABLE participants (
+       id SERIAL PRIMARY KEY,
+       name VARCHAR(100) NOT NULL,
+       email VARCHAR(150) NOT NULL UNIQUE
+   );
+
+   -- Create the `event_participants` table
+   CREATE TABLE event_participants (
+       event_id INTEGER NOT NULL,
+       participant_id INTEGER NOT NULL,
+       PRIMARY KEY (event_id, participant_id),
+       CONSTRAINT event_participants_event_id_fkey FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+       CONSTRAINT event_participants_participant_id_fkey FOREIGN KEY (participant_id) REFERENCES participants(id) ON DELETE CASCADE
+   );
+
+   -- Create the `users` table
+   CREATE TABLE users (
+       id SERIAL PRIMARY KEY,               
+       email VARCHAR(255) NOT NULL UNIQUE,
+       password VARCHAR(255) NOT NULL,
+       created_at TIMESTAMP DEFAULT NOW()
+   );
+   ```
+
+   Save this file in a directory accessible to your PostgreSQL client.
+
+
+#### Run the Script in `psql`
+
+1. Open a terminal or command prompt and navigate to the directory where the script file is located.
+2. Log in to your PostgreSQL server using `psql`:
+
+3. Create the database:
+   ```sql
+   CREATE DATABASE event_management;
+   ```
+
+4. Switch to the `event_management` database:
+   ```bash
+   \c event_management
+   ```
+
+5. Execute the script:
+   ```bash
+   \i setup_event_management.sql
+   ```
+
+### OR Manual Setup
+
 
 1. Log in to your PostgreSQL server using your preferred tool (e.g., `psql`, pgAdmin).
 2. Create the database:
@@ -106,7 +177,8 @@ CREATE TABLE users (
 
 ```
 
-5. Verify the tables have been created:
+### Verify the Tables
+ Verify the tables have been created:
    ```sql
    \dt
    ```
