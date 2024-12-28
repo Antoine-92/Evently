@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ColDef, AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
@@ -13,9 +13,8 @@ ModuleRegistry.registerModules([AllCommunityModule]);
   standalone: true,
   imports: [FormsModule, CommonModule, AgGridModule],
   templateUrl: './edit-event.component.html',
-  styleUrls: ['./edit-event.component.css']
+  styleUrls: ['./edit-event.component.css'],
 })
-
 export class EditEventComponent {
   event = {
     name: '',
@@ -36,9 +35,9 @@ export class EditEventComponent {
     'conference keynote',
     'hackathon',
     'training session',
-    'roundtable'
+    'roundtable',
   ];
-  
+
   participantList: any[] = [];
   showSuccessMessage = false;
   colDefs: ColDef[] = [];
@@ -54,9 +53,18 @@ export class EditEventComponent {
     this.initializeGrid();
   }
 
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found. Ensure the user is logged in.');
+      return new HttpHeaders();
+    }
+    return new HttpHeaders({ Authorization: `Bearer ${token}` });
+  }
+
   fetchParticipants() {
     const apiUrl = 'http://localhost:3000/api/participants';
-    this.http.get(apiUrl).subscribe({
+    this.http.get(apiUrl, { headers: this.getHeaders() }).subscribe({
       next: (response: any) => {
         this.participantList = response;
       },
@@ -68,11 +76,11 @@ export class EditEventComponent {
 
   fetchEvent(eventId: number) {
     const apiUrl = `http://localhost:3000/api/events/${eventId}`;
-    this.http.get<any>(apiUrl).subscribe({
+    this.http.get<any>(apiUrl, { headers: this.getHeaders() }).subscribe({
       next: (data) => {
         this.event = {
           ...data,
-          date: this.formatDate(data.date), // Format the date here
+          date: this.formatDate(data.date), 
         };
       },
       error: (err) => {
@@ -83,7 +91,7 @@ export class EditEventComponent {
 
   fetchEventParticipants(eventId: number) {
     const participantsApiUrl = `http://localhost:3000/api/events/${eventId}/participants`;
-    this.http.get<any[]>(participantsApiUrl).subscribe({
+    this.http.get<any[]>(participantsApiUrl, { headers: this.getHeaders() }).subscribe({
       next: (participants) => {
         this.event.participants = participants;
       },
@@ -92,35 +100,35 @@ export class EditEventComponent {
       },
     });
   }
-  
+
   formatDate(isoDate: string): string {
     const date = new Date(isoDate);
     date.setDate(date.getDate() + 1);
     return date.toISOString().split('T')[0]; // Extract only the "yyyy-MM-dd" part
   }
-  
+
   onSubmit() {
     const eventId = this.route.snapshot.params['id'];
     const apiUrl = `http://localhost:3000/api/events/${eventId}`;
-  
+
     const adjustedDate = this.event.date;
-  
+
     const updatedEvent = {
       ...this.event,
       date: `${adjustedDate}T00:00:00.000Z`,
     };
-  
-    this.http.put(apiUrl, updatedEvent).subscribe({
+
+    this.http.put(apiUrl, updatedEvent, { headers: this.getHeaders() }).subscribe({
       next: () => {
         this.showSuccessMessage = false;
-        this.router.navigate(['/events']); 
+        this.router.navigate(['/events']);
       },
       error: (err) => {
         console.error('Failed to update event:', err);
       },
     });
   }
-  
+
   addOneDay(dateString: string): string {
     const date = new Date(dateString);
     date.setDate(date.getDate() + 1);
@@ -149,10 +157,9 @@ export class EditEventComponent {
 
   removeParticipant(participantId: number): void {
     const apiUrl = `http://localhost:3000/api/events/${this.eventId}/participants/${participantId}`;
-    this.http.delete(apiUrl).subscribe({
+    this.http.delete(apiUrl, { headers: this.getHeaders() }).subscribe({
       next: () => {
         console.log(`Participant ${participantId} removed successfully.`);
-        // Ensure `this.event.participants` is defined before filtering
         if (Array.isArray(this.event.participants)) {
           this.event.participants = this.event.participants.filter(
             (participant: any) => participant.participant_id !== participantId
@@ -166,6 +173,6 @@ export class EditEventComponent {
   }
 
   openAddParticipantModal() {
-    this.router.navigate(['/relations/event/' , this.eventId]); //
+    this.router.navigate(['/relations/event/', this.eventId]);
   }
 }

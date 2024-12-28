@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -45,9 +45,18 @@ export class RelationFormComponent implements OnInit {
     });
   }
 
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found. Ensure the user is logged in.');
+      return new HttpHeaders();
+    }
+    return new HttpHeaders({ Authorization: `Bearer ${token}` });
+  }
+
   fetchParticipants() {
     const apiUrlParticipants = 'http://localhost:3000/api/participants';
-    this.http.get(apiUrlParticipants).subscribe(
+    this.http.get(apiUrlParticipants, { headers: this.getHeaders() }).subscribe(
       (data: any) => {
         this.participants = data;
       },
@@ -57,7 +66,7 @@ export class RelationFormComponent implements OnInit {
   
   fetchEvents() {
     const apiUrlEvents = 'http://localhost:3000/api/events';
-    this.http.get(apiUrlEvents).subscribe(
+    this.http.get(apiUrlEvents, { headers: this.getHeaders() }).subscribe(
       (data: any) => {
         this.events = data;
       },
@@ -67,7 +76,7 @@ export class RelationFormComponent implements OnInit {
   
   fetchRelations() {
     const apiUrlRelations = 'http://localhost:3000/api/relations';
-    this.http.get(apiUrlRelations).subscribe(
+    this.http.get(apiUrlRelations, { headers: this.getHeaders() }).subscribe(
       (data: any) => {
         this.relations = data;
       },
@@ -96,14 +105,14 @@ export class RelationFormComponent implements OnInit {
       return;
     }
     const apiUrlPost = `http://localhost:3000/api/events/${this.selectedEventId}/participants/${this.selectedParticipantId}`;
-    this.http.post(apiUrlPost, {}).subscribe(
+    this.http.post(apiUrlPost, {}, { headers: this.getHeaders() }).subscribe(
       () => {
         this.successMessage = 'Participant added to the event successfully!';
         this.errorMessage = '';
-        this.cdr.detectChanges(); // Trigger change detection
+        this.cdr.detectChanges();
         setTimeout(() => {
           this.successMessage = '';
-          this.cdr.detectChanges(); // Trigger change detection again
+          this.cdr.detectChanges();
         }, 3000);
         this.fetchRelations();
         this.selectedEventId = null;

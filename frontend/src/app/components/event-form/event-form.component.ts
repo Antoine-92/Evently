@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
@@ -45,9 +45,19 @@ export class EventFormComponent implements OnInit {
     this.fetchParticipants();
   }
 
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found. Ensure the user is logged in.');
+      return new HttpHeaders();
+    }
+    return new HttpHeaders({ Authorization: `Bearer ${token}` });
+  }
+  
+
   fetchParticipants() {
     const apiUrl = 'http://localhost:3000/api/participants';
-    this.http.get(apiUrl).subscribe({
+    this.http.get(apiUrl, { headers: this.getHeaders() }).subscribe({
       next: (response: any) => {
         this.participantList = response;
       },
@@ -63,13 +73,13 @@ export class EventFormComponent implements OnInit {
 
   onSubmit() {
     const apiUrl = 'http://localhost:3000/api/events';
-    this.http.post(apiUrl, this.event).subscribe({
+    this.http.post(apiUrl, this.event, { headers: this.getHeaders() }).subscribe({
       next: async (response: any) => {
 
         // Add participants to the event
         for (const participantId of this.event.participants) {
           const addParticipantUrl = `http://localhost:3000/api/events/${response.id}/participants/${participantId}`;
-          await this.http.post(addParticipantUrl, {}).toPromise();
+          await this.http.post(addParticipantUrl,this.event, { headers: this.getHeaders() }).toPromise();
         }
 
         // Show success message

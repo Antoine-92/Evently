@@ -7,19 +7,6 @@ const jwtSecret = process.env.JWT_SECRET || '94dddc83ca1e12da906ac626861d2f73306
 
 /**
  * @swagger
- * tags:
- *   - name: Events
- *     description: API for managing events
- *   - name: Participants
- *     description: API for managing participants
- *   - name: Relations
- *     description: API for managing relations between events and participants
- *   - name: Authentication
- *     description: API for login/register users
- */
-
-/**
- * @swagger
  * /api/events:
  *   get:
  *     tags:

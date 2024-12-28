@@ -24,20 +24,40 @@ export class EventListComponent implements OnInit {
 
   fetchEvents() {
     const apiUrl = 'http://localhost:3000/api/events';
-    this.http.get<any[]>(apiUrl).subscribe({
-      next: (data) => {
-        this.events = data.map(event => ({
-          ...event,
-          id: event.event_id,
-          participants: event.participants || []
-        }));
-      },
-      error: (err) => {
-        console.error('Failed to fetch events:', err);
-        this.errorMessage = 'Could not fetch events. Please try again later.';
-      }
+    const token = localStorage.getItem('token'); // Retrieve the token stored during login
+
+    if (!token) {
+        console.error('No token found in local storage.');
+        this.errorMessage = 'You are not logged in. Please log in to view events.';
+        return;
+    }
+
+    const headers = {
+        Authorization: `Bearer ${token}` // Add the Authorization header with the token
+    };
+
+    this.http.get<any[]>(apiUrl, { headers }).subscribe({
+        next: (data) => {
+            this.events = data.map(event => ({
+                ...event,
+                id: event.event_id,
+                participants: event.participants || []
+            }));
+        },
+        error: (err) => {
+            console.error('Failed to fetch events:', err);
+
+            if (err.status === 401) {
+                this.errorMessage = 'Unauthorized access. Please log in again.';
+            } else if (err.status === 403) {
+                this.errorMessage = 'Access forbidden. Your session may have expired.';
+            } else {
+                this.errorMessage = 'Could not fetch events. Please try again later.';
+            }
+        }
     });
-  }
+}
+
 
   formatDate(isoDate: string): string {
     const date = new Date(isoDate);
@@ -47,7 +67,16 @@ export class EventListComponent implements OnInit {
 
   onDeleteEvent(eventId: number) {
     const apiUrl = `http://localhost:3000/api/events/${eventId}`;
-    this.http.delete(apiUrl).subscribe({
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.error('No token found in local storage.');
+        this.errorMessage = 'You are not logged in. Please log in to view events.';
+        return;
+    }
+    const headers = {
+        Authorization: `Bearer ${token}`
+    };
+    this.http.delete<any[]>(apiUrl, { headers }).subscribe({
       next: () => {
         this.successMessage = 'Event deleted successfully!';
         this.events = this.events.filter(event => event.id !== eventId);
@@ -55,7 +84,13 @@ export class EventListComponent implements OnInit {
       },
       error: (err) => {
         console.error('Failed to delete event:', err);
-        this.errorMessage = 'Could not delete the event. Please try again later.';
+        if (err.status === 401) {
+          this.errorMessage = 'Unauthorized access. Please log in again.';
+        } else if (err.status === 403) {
+            this.errorMessage = 'Access forbidden. Your session may have expired.';
+        } else {
+            this.errorMessage = 'Could not fetch events. Please try again later.';
+        }
         setTimeout(() => (this.errorMessage = ''), 3000);
       }
     });

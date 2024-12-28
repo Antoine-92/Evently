@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ColDef, AllCommunityModule, ModuleRegistry, PaginationModule, PaginationNumberFormatterParams, } from 'ag-grid-community';
 import { AgGridModule } from 'ag-grid-angular';
 import { Router } from '@angular/router';
@@ -45,6 +45,15 @@ export class ParticipantListComponent implements OnInit {
     this.initializeGrid();
     this.fetchParticipants();
   }
+
+  private getHeaders(): HttpHeaders {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          console.error('No token found. Ensure the user is logged in.');
+          return new HttpHeaders();
+        }
+        return new HttpHeaders({ Authorization: `Bearer ${token}` });
+      }
 
   private initializeGrid(): void {
     this.colDefs = [
@@ -93,11 +102,11 @@ export class ParticipantListComponent implements OnInit {
     this.loading = true;
     const apiUrl = 'http://localhost:3000/api/participants';
     const eventApiUrl = 'http://localhost:3000/api/events/participants';
-    this.http.get<any[]>(apiUrl).subscribe({
+    this.http.get<any[]>(apiUrl, { headers: this.getHeaders() }).subscribe({
       next: async (participants: any[]) => {
         const participantPromises = participants.map(async (participant) => {
           const eventsUrl = `${eventApiUrl}/${participant.id}`;
-          const events = await this.http.get<any[]>(eventsUrl).toPromise();
+          const events = await this.http.get<any[]>(eventsUrl, { headers: this.getHeaders() }).toPromise();
           return { 
             ...participant, 
             events: (events ?? []).map((event) => event.event_name) 
@@ -117,7 +126,7 @@ export class ParticipantListComponent implements OnInit {
     const deleteID = rowData.id;
     this.rowData = this.rowData.filter((row) => row.id !== deleteID);
     const apiUrl = `http://localhost:3000/api/participants/${rowData.id}`;
-    this.http.delete(apiUrl).subscribe({
+    this.http.delete(apiUrl, { headers: this.getHeaders() }).subscribe({
       next: () => {
         this.successMessage = 'Participant deleted successfully!';
         console.log('Participant deleted successfully!');

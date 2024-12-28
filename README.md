@@ -125,7 +125,7 @@ CREATE TABLE users (
    cd backend
    ```
 
-2. replace placeholders with your database credentials into `config.ts` file:
+2. replace placeholders with your database credentials into `config.ts` and into `.env` file:
    ```plaintext
     user: process.env.DB_USER || 'your_database_user',
     host: process.env.DB_HOST || 'your_database_host',
@@ -378,8 +378,6 @@ The application features a robust authentication system using JSON Web Tokens (J
 #### Protecting Backend Routes
 
 To secure backend routes, the application uses an authentication middleware that verifies the presence and validity of a JWT token in the `Authorization` header of incoming requests. If the token is missing, invalid, or expired, the middleware denies access with appropriate status codes (`401 Unauthorized` or `403 Forbidden`). For valid tokens, the middleware decodes the token, attaches the user information to the request object, and allows access to the protected routes. This ensures only authenticated users can access sensitive resources, with any unauthorized requests being gracefully handled through descriptive error responses.
-
-
 
 ---
 

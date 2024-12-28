@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HighchartsChartModule } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import { CommonModule } from '@angular/common';
@@ -72,12 +72,21 @@ export class StatisticsComponent implements OnInit {
   ngOnInit(): void {
     this.fetchStatistics();
   }
+  
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found. Ensure the user is logged in.');
+      return new HttpHeaders();
+    }
+    return new HttpHeaders({ Authorization: `Bearer ${token}` });
+  }
 
   fetchStatistics(): void {
     this.loading = true;
 
     const apiUrl = 'http://localhost:3000/api/events';
-    this.http.get<any[]>(apiUrl).subscribe({
+    this.http.get<any[]>(apiUrl, { headers: this.getHeaders() }).subscribe({
       next: (data) => {
         this.updateCharts(data);
         this.loading = false;
@@ -90,7 +99,7 @@ export class StatisticsComponent implements OnInit {
     });
     this.loading = true;
     const apiUrl2 = 'http://localhost:3000/api/events';
-    this.http.get<any[]>(apiUrl2).subscribe({
+    this.http.get<any[]>(apiUrl2, { headers: this.getHeaders() }).subscribe({
       next: (events) => {
         this.calculateTotalParticipantions(events);
         this.calculateTotalParticipants(events);
