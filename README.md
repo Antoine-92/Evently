@@ -243,6 +243,14 @@ CREATE TABLE users (
 
 ---
 
+## **Video Demonstration**
+
+To better understand the features and functionality of Evently, watch the video demonstration below:
+
+[![Watch the video](https://img.youtube.com/vi/fWRE8H6IOT0/0.jpg)](https://www.youtube.com/watch?v=fWRE8H6IOT0)
+
+---
+
 ## **Application Pages**
 
 Below is a detailed description of the main pages in the Evently application, outlining their features and functionalities:
