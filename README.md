@@ -226,7 +226,7 @@ CREATE TABLE users (
    ```
 2. Install frontend dependencies:
    ```bash
-   npm install @angular/core @angular/router @angular/common @angular/forms ag-grid-community ag-grid-angular highcharts primeng primeicons
+   npm install @angular/core @angular/router @angular/common @angular/forms ag-grid-community ag-grid-angular highcharts
    ```
 3. Start the frontend server:
    ```bash
