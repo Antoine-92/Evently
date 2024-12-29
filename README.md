@@ -453,11 +453,11 @@ With this mock data, the application is pre-populated with AI-related events and
 ### Common Issues
 1. **Database Connection Error**:
    - Ensure PostgreSQL is running.
-   - Verify `config.ts` variables are correctly configured.
+   - Verify `config.ts` & `.env` variables are correctly configured.
    - Test the connection to the database manually using `psql` or a database client.
 
 2. **Port Conflicts**:
-   - If `3000` or `4200` is in use, update the `PORT` variable in `config.ts` or Angular CLI configuration.
+   - If `3000` or `4200` is in use, update the `PORT` variable in `config.ts` & `.env` or Angular CLI configuration.
 
 3. **Dependency Issues**:
    - Run `npm install` again in the respective folder.
