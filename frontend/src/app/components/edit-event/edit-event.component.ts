@@ -104,7 +104,7 @@ export class EditEventComponent {
   formatDate(isoDate: string): string {
     const date = new Date(isoDate);
     date.setDate(date.getDate() + 1);
-    return date.toISOString().split('T')[0]; // Extract only the "yyyy-MM-dd" part
+    return date.toISOString().split('T')[0];
   }
 
   onSubmit() {

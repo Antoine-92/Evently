@@ -23,13 +23,13 @@ export class LoginComponent {
 
   onSubmit() {
     const credentials = { email: this.email, password: this.password };
-    this.errorMessage = ''; // Clear any previous error message
+    this.errorMessage = '';
 
     const userName = this.email
-      .split('@')[0] // Extract part before "@"
-      .replace(/[0-9]/g, '') // Remove all digits
-      .replace('.', ' ') // Replace dots with spaces
-      .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase()); // Capitalize each word
+      .split('@')[0]
+      .replace(/[0-9]/g, '')
+      .replace('.', ' ') 
+      .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase()); 
 
 
     this.http.post('http://localhost:3000/api/auth/login', credentials).subscribe({
@@ -45,7 +45,7 @@ export class LoginComponent {
   }
 
   navigateToSignUp() {
-    this.router.navigate(['/signup']); // Update '/signup' to the actual route for your sign-up page
+    this.router.navigate(['/signup']);
   }
 
   togglePasswordVisibility() {

@@ -24,7 +24,7 @@ export class EventListComponent implements OnInit {
 
   fetchEvents() {
     const apiUrl = 'http://localhost:3000/api/events';
-    const token = localStorage.getItem('token'); // Retrieve the token stored during login
+    const token = localStorage.getItem('token'); 
 
     if (!token) {
         console.error('No token found in local storage.');
@@ -33,7 +33,7 @@ export class EventListComponent implements OnInit {
     }
 
     const headers = {
-        Authorization: `Bearer ${token}` // Add the Authorization header with the token
+        Authorization: `Bearer ${token}` 
     };
 
     this.http.get<any[]>(apiUrl, { headers }).subscribe({
